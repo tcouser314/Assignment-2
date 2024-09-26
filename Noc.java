@@ -12,6 +12,7 @@ public class Noc implements NocInterface
 {
     // instance variable declarations
 	private Node firstAthlete;
+	private int year;
     
 	/**
 	 * Constructor
@@ -21,9 +22,10 @@ public class Noc implements NocInterface
      *                  initialised with the relevant parameters.
 	 * Informally: Initialise the collection of athletes.
 	 */
-    public Noc()
+    public Noc(int year)
     {
-		firstAthlete = null;
+		this.firstAthlete = null;
+		this.year = year;
     }
 
 	/**
@@ -86,9 +88,6 @@ public class Noc implements NocInterface
 	}
 
 
-	public void addAthleteToNOC(Athlete a) {
-		return;
-	}
 	/**
 	 * addAthleteToNOC()
 	 * 
@@ -101,47 +100,28 @@ public class Noc implements NocInterface
 	 * Informally: Add an athlete to an Olympic Games in order of NOC and
      *                  athlete name.
 	 */
-	// public void addAthleteToNOC(Athlete a)
-	// {
-	// 	Node newNode = new Node(a);
-	// 	Node current = firstAthlete;
-	// 	Node previous = null;
-	// 	boolean inserted = false;
-
-	// 	while (current != null && !inserted) {
-	// 		Athlete currentAthlete = (Athlete) current.data;
-	// 		if (a.getNOC().compareTo(currentAthlete.getNOC()) < 0) {
-	// 			if (previous == null) {
-	// 				newNode.next = firstAthlete;
-	// 				firstAthlete = newNode;
-	// 			} else {
-	// 				previous.next = newNode;
-	// 				newNode.next = current;
-	// 			}
-	// 			inserted = true;
-	// 		} else if (a.getNOC().compareTo(currentAthlete.getNOC()) == 0) {
-	// 			if (a.getName().compareTo(currentAthlete.getName()) < 0) {
-	// 				if (previous == null) {
-	// 					newNode.next = firstAthlete;
-	// 					firstAthlete = newNode;
-	// 				} else {
-	// 					previous.next = newNode;
-	// 					newNode.next = current;
-	// 				}
-	// 				inserted = true;
-	// 			}
-	// 		}
-	// 		previous = current;
-	// 		current = current.next;
-	// 	}
-	// 	if (!inserted) {
-	// 		if (previous == null) {
-	// 			firstAthlete = newNode;
-	// 		} else {
-	// 			previous.next = newNode;
-	// 		}
-	// 	}
-	// }
+	public void addAthleteToNOC(Athlete a)
+	{
+		Node newNode = new Node(a);
+        if (firstAthlete == null) {
+            firstAthlete = newNode;
+        } else {
+            Node current = firstAthlete;
+            Node previous = null;
+            while (current != null && a.getNOC().compareTo(((Athlete) current.data).getNOC()) > 0) {
+			// while (current != null && a.getName().compareTo(((Athlete) current.data).getName()) > 0) {
+                previous = current;
+                current = current.next;
+            }
+            if (previous == null) {
+                newNode.next = firstAthlete;
+                firstAthlete = newNode;
+            } else {
+                newNode.next = previous.next;
+                previous.next = newNode;
+            }
+        }
+	}
 
 	/**
 	 * getGoldCount()
@@ -216,7 +196,9 @@ public class Noc implements NocInterface
 	 */
     public void showMedalTally()
     {
-
+		int year = getYear();
+		String city = getCity();
+		System.out.println("Medal Tally for " + year + " in " + city);
     }
 
 	/**
@@ -233,6 +215,12 @@ public class Noc implements NocInterface
 	 */
     public String toString()
     {
-		return "";
+		String result = "";
+		Node current = firstAthlete;
+		while (current != null) {
+			result += current.data.toString() + "\n";
+			current = current.next;
+		}
+		return result;
     }
 }

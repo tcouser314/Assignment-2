@@ -12,7 +12,7 @@ public class Years implements YearsInterface
 {
     // instance variable declarations
     
-    private Node firstAthlete;
+    protected Node firstNOC;
     
 	/**
 	 * Constructor
@@ -24,7 +24,7 @@ public class Years implements YearsInterface
 	 */
     public Years()
     {
-        firstAthlete = null;
+        this.firstNOC = null;
     }
 
 	/**
@@ -39,7 +39,7 @@ public class Years implements YearsInterface
 	 */
     public boolean isEmpty()
     {
-        return (firstAthlete == null);
+        return (firstNOC == null);
     }
 
     /**
@@ -62,70 +62,49 @@ public class Years implements YearsInterface
         if (a.result.equals("No medal")) {
             return;
         }
-    
-        Node newNode = new Node(a);
-    
-        // If the list is empty, add the athlete as the first node
-        if (isEmpty()) {
-            firstAthlete = newNode;
-            return;
-        }
-    
-        Node current = firstAthlete;
+
+        boolean found = false;
+        Node current = firstNOC;
         Node previous = null;
-    
-        // Traverse the list to find the correct insertion point
-        while (current != null) {
-            Athlete currentAthlete = (Athlete) current.data;
-    
-            // Compare year first, then noc, then name
-            int yearComparison = a.year - currentAthlete.year;
-            int nocComparison = a.noc.compareTo(currentAthlete.noc);
-            int nameComparison = a.name.compareTo(currentAthlete.name);
-    
-            if (yearComparison < 0 || 
-                (yearComparison == 0 && nocComparison < 0) || 
-                (yearComparison == 0 && nocComparison == 0 && nameComparison < 0)) {
+        Noc currentNoc = null;
+
+        while (current != null && !found) {
+            currentNoc = (Noc) current.data;
+            if (currentNoc.getYear() == a.year) {
+                found = true;
+            } else if (currentNoc.getYear() > a.year) {
                 break;
             }
-    
             previous = current;
             current = current.getNext();
         }
-    
-        // Insert the new athlete at the correct position
-        if (previous == null) {
-            // Insert at the beginning
-            newNode.setNext(firstAthlete);
-            firstAthlete = newNode;
-        } else {
-            // Insert in the middle or end
-            newNode.setNext(current);
-            previous.setNext(newNode);
+
+        if (!found) {
+            Node newNode = new Node(new Noc(a.year));
+            if (previous == null) {
+                newNode.setNext(firstNOC);
+                firstNOC = newNode;
+            } else {
+                newNode.setNext(previous.next);
+                previous.setNext(newNode);
+            }
+            currentNoc = (Noc) newNode.data;
+        }
+        if (currentNoc != null) {
+            currentNoc.addAthleteToNOC(a);
         }
     }
-    
 
 
     public void displayAthletes()
     {
-        Node current = firstAthlete;
-        Athlete currentAthlete = (Athlete) current.data;
-        Node next = firstAthlete.next;
-        Athlete nextAthlete = (Athlete) next.data;
+        Node current = firstNOC;
         while (current != null) {
-            currentAthlete = (Athlete) current.data;
-            nextAthlete = (Athlete) next.data;
-
-            if (currentAthlete.year != nextAthlete.year) {
-                System.out.println("");
-            }
-
-            System.out.println(currentAthlete);
+            Noc currentNoc = (Noc) current.data;
+            System.out.println(currentNoc.toString());
             current = current.getNext();
-            }
         }
-        
+    }
 
     /**
 	 * showMostSuccessfulYear()
@@ -148,32 +127,24 @@ public class Years implements YearsInterface
      *                  gold medals.
 	 */
     public int showMostSuccessfulYear(String noc) {
-        Node current = firstAthlete;
-
-        int[] yearGolds = new int[3000];
+        Node current = firstNOC;
         int max = 0;
-        int maxYear = 0;
-
+        int year = 0;
         while (current != null) {
-            Athlete currentAthlete = (Athlete) current.data;
-            if (currentAthlete.noc.contains(noc) && currentAthlete.result.contains("Gold")) {
-                yearGolds[currentAthlete.year]++;
+            Noc currentNoc = (Noc) current.data;
+            int goldCount = currentNoc.getGoldCount(noc);
+            if (goldCount > max) {
+                max = goldCount;
+                year = currentNoc.getYear();
             }
             current = current.getNext();
         }
-    for (int year = 1850; year <yearGolds.length; year++) {
-        if (yearGolds[year] > max) {
-            max = yearGolds[year];
-            maxYear = year;
+        if (year == 0) {
+            System.out.println("No data!");
+        } else {
+            System.out.println("The most successful year for " + noc + " was " + year + " with " + max + " Gold medals!\n");
         }
-    }
-
-    if (max == 0) {
-        System.out.println("No data!");
-        return 0;
-    }
-    System.out.println("\nThe most successful year for " + noc + " was " + maxYear + " with " + max + " Gold medals!\n");
-    return maxYear;
+        return year;
     }
 
     /**
@@ -195,44 +166,26 @@ public class Years implements YearsInterface
 	 */
     public void showWinningNOC(int year)
     {
-        Node current = firstAthlete;
-        
-        String[] nocs = new String[200];
-        int[] goldCount = new int[200];
-        int nocIndex = 0;
-
+        Node current = firstNOC;
+        Noc winningNoc = null;
+        int winningCount = 0;
         while (current != null) {
-            Athlete currentAthlete = (Athlete) current.data;
-            if (currentAthlete.year == year && currentAthlete.result.contains("Gold")) {
-                boolean found = false;
-                for (int i = 0; i < nocIndex; i++) {
-                    if (nocs[i].equals(currentAthlete.noc)) {
-                        goldCount[i]++;
-                        found = true;
-                    }
-                }
-                if (!found) {
-                    nocs[nocIndex] = currentAthlete.noc;
-                    goldCount[nocIndex]++;
-                    nocIndex++;
+            Noc currentNoc = (Noc) current.data;
+            if (currentNoc.getYear() == year) {
+                String noc = currentNoc.getWinningNOC();
+                int count = currentNoc.getGoldCount(noc);
+                if (count > winningCount) {
+                    winningNoc = currentNoc;
+                    winningCount = count;
                 }
             }
-        current = current.getNext();
+            current = current.getNext();
         }
-    if (nocIndex == 0) {
-        System.out.println("No data!");
-        return;
-    }
-    String winningnoc = nocs[0];
-    int max = goldCount[0];
-
-    for (int i = 1; i < nocIndex; i++) {
-        if (goldCount[i] > max) {
-            max = goldCount[i];
-            winningnoc = nocs[i];
+        if (winningNoc == null) {
+            System.out.println("No data!");
+        } else {
+            System.out.println("The NOC with the most gold medals in " + year + " was " + winningNoc.getWinningNOC() + " with " + winningCount + " Gold medals!\n");
         }
-    }
-    System.out.println("The most successful country in " + year + " was " + winningnoc + " with " + max + " Gold medals!\n");
     }
 
     /**
@@ -253,91 +206,22 @@ public class Years implements YearsInterface
 	 */
     public void showMedalTally(int year)
     {
-        final int SIZE = 500;
-        Node current = firstAthlete;
-        String[] nocs = new String[SIZE];
-        int[] goldCount = new int[SIZE];
-        int[] silverCount = new int[SIZE];
-        int[] bronzeCount = new int[SIZE];
-        int[] medalCount = new int[SIZE];
-        int nocIndex = 0;
-        String city = null;
-
+        Node current = firstNOC;
+        Noc currentNoc = null;
         while (current != null) {
-            Athlete athlete = (Athlete) current.data;
-            
-            if (athlete.year == year) {
-                boolean nocFound = false;
-                if (city == null) {
-                    city = athlete.city;
-                }
-                
-                for (int i = 0; i < nocIndex; i++) {
-                    if (nocs[i].equals(athlete.noc)) {
-                        nocFound = true;
-                        char result = athlete.result.charAt(0);
-                        medalCount[i]++;
-                        if (result == 'G') {
-                            goldCount[i]++;
-                        } else if (result == 'S') {
-                            silverCount[i]++;
-                        } else {
-                            bronzeCount[i]++;
-                        }
-                    }
+            currentNoc = (Noc) current.data;
+            if (currentNoc.getYear() == year) {
+                break;
             }
-        if (!nocFound) {
-            nocs[nocIndex] = athlete.noc;
-            char result = athlete.result.charAt(0);
-            medalCount[nocIndex]++;
-            if (result == 'G') {
-                goldCount[nocIndex]++;
-            } else if (result == 'S') {
-                silverCount[nocIndex]++;
-            } else {
-                bronzeCount[nocIndex]++;
-            }
-            nocIndex++;
-        }
-        }
-        
-        current = current.getNext();
-    }
-
-    if (nocIndex == 0) {
-        System.out.println("No data!");
-        return;
-    }
-    
-    System.out.println("Medal Tally for " + year + " Olympic Games in " + city + "\n\n");
-
-    for (int i = 0; i < nocIndex; i++) {
-        String tallyString = "";
-        for (int j = 0; j < goldCount[i]; j++) {
-            tallyString += "G";
-        }
-        for (int j = 0; j < silverCount[i]; j++) {
-            tallyString += "S";
-        }
-        for (int j = 0; j < bronzeCount[i]; j++) {
-            tallyString += "B";
-        }
-        
-        String tally = nocs[i] + "\t" + tallyString + " "+goldCount[i]+" x Gold, "+silverCount[i]+" x Silver, "+bronzeCount[i]+" x Bronze, Total: "+medalCount[i];
-        System.out.println(tally);
-    }
-}
-
-    public void showAthletes() {
-        Node current = firstAthlete;
-        int num = 0;
-        while (current != null) {
-            Athlete currentAthlete = (Athlete) current.data;
-            System.out.println(num+1+". "+currentAthlete.toString());
-            num++;
             current = current.getNext();
         }
+        if (currentNoc == null) {
+            System.out.println("No data!");
+        } else {
+            currentNoc.showMedalTally();
+        }
     }
+
 
     public boolean compare(String a, String b) {
         return a.compareTo(b) < 0;
