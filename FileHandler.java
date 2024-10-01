@@ -129,7 +129,7 @@ public class FileHandler implements FileHandlerInterface
 	 */
     public void readFile(Years olympiad)
     {
-        final int LIMIT = 500;    // number of athletes to process; reduce to, e.g., 25 when debugging
+        final int LIMIT = Integer.MAX_VALUE;    // number of athletes to process; reduce to, e.g., 25 when debugging
         
         String line;        // line of data read from file
         String []tokens;    // line of data broken into fields

@@ -57,6 +57,7 @@ public class AssigTwo224
 		System.out.print("Which NOC would you like to explore? ");
 		noc=sc.nextLine();
 		year=olympiad.showMostSuccessfulYear(noc);
+		// System.out.println(year);
 
 		// seek most successful NOC for that year
 		olympiad.showWinningNOC(year);

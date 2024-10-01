@@ -169,7 +169,8 @@ public class Years implements YearsInterface
         Node current = firstNOC;
         Noc winningNoc = null;
         int winningCount = 0;
-
+        System.out.println("test");
+        
         while (current != null) {
             Noc currentNoc = (Noc) current.data;
             if (currentNoc.getYear() == year) {
