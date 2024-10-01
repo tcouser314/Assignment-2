@@ -49,7 +49,7 @@ public class AssigTwo224
 		myFile=new FileHandler(FILENAME);
 		myFile.readFile(olympiad);
 
-		olympiad.displayAthletes();
+		// olympiad.displayAthletes();
 
 		// System.out.println(olympiad.toString());  // uncomment when debugging
 

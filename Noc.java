@@ -171,6 +171,7 @@ public class Noc implements NocInterface
 		String winningNOC = "";
 		int winningCount = 0;
 		Node current = firstAthlete;
+		int year = getYear();
 
 		while (current != null) {
 			Athlete currentAthlete = (Athlete) current.data;
@@ -197,10 +198,37 @@ public class Noc implements NocInterface
 		int year = getYear();
 		String city = getCity();
 		System.out.println("Medal Tally for " + year + " in " + city);
+		String Golds = "";
+		String Silvers = "";
+		String Bronzes = "";
+		int goldCount = 0;
+		int silverCount = 0;
+		int bronzeCount = 0;
+		int total = 0;
 
 		Node current = firstAthlete;
-		Athlete currentAthlete = (Athlete) current.data;
 
+		while (current != null) {
+			Athlete currentAthlete = (Athlete) current.data;
+		if (currentAthlete.getResult().equals("Gold")) {
+			Golds += "G";
+			goldCount++;
+			total ++;
+		}
+		else if (currentAthlete.getResult().equals("Silver")) {
+			Silvers += "S";
+			silverCount++;
+			total ++;
+		}
+		else if (currentAthlete.getResult().equals("Bronze")) {
+			Bronzes += "B";
+			bronzeCount++;
+			total ++;
+		}
+		current = current.next;
+		}
+		Athlete firstAthleteAthlete = (Athlete) firstAthlete.data;
+		System.out.println(firstAthleteAthlete.getNOC() + "\t|\t" + Golds + Silvers + Bronzes + "\t" + goldCount + " x Gold, " + silverCount + " x Silver, " + bronzeCount + " x Bronze; Total: " + total);
     }
 
 	/**
