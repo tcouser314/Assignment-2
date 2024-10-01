@@ -171,10 +171,14 @@ public class Noc implements NocInterface
 		String winningNOC = "";
 		int winningCount = 0;
 		Node current = firstAthlete;
+		int goldCount = 0;
+
+		// winningCount = getGoldCount("USA");
+		// return "USA won " + winningCount + " gold medals in " + year;
 
 		while (current != null) {
 			Athlete currentAthlete = (Athlete) current.data;
-			int goldCount = getGoldCount(currentAthlete.getNOC());
+			goldCount = getGoldCount(currentAthlete.getNOC());
 			if (goldCount > winningCount) {
 				winningNOC = currentAthlete.getNOC();
 				winningCount = goldCount;
@@ -182,7 +186,7 @@ public class Noc implements NocInterface
 				winningNOC = currentAthlete.getNOC();
 			}
 		}
-		return "WinningNOC";
+		return winningNOC;
 	}
 
     /**
