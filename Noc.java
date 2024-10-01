@@ -171,7 +171,6 @@ public class Noc implements NocInterface
 		String winningNOC = "";
 		int winningCount = 0;
 		Node current = firstAthlete;
-		int year = getYear();
 
 		while (current != null) {
 			Athlete currentAthlete = (Athlete) current.data;

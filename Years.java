@@ -167,26 +167,25 @@ public class Years implements YearsInterface
     public void showWinningNOC(int year)
     {
         Node current = firstNOC;
-        Noc winningNoc = null;
-        int winningCount = 0;
-        System.out.println("test");
+        String winningNoc = null;
+        boolean found = false;
         
-        while (current != null) {
+        while (current != null && !found) {
             Noc currentNoc = (Noc) current.data;
+            System.out.println("test" + currentNoc.getYear());
             if (currentNoc.getYear() == year) {
-                String noc = currentNoc.getWinningNOC();
-                int count = currentNoc.getGoldCount(noc);
-                if (count > winningCount) {
-                    winningNoc = currentNoc;
-                    winningCount = count;
-                }
+                found = true;
+                System.out.println("found");
             }
             current = current.getNext();
         }
-        if (winningNoc == null) {
+        if (!found) {
             System.out.println("No data!");
         } else {
-            System.out.println("The NOC with the most gold medals in " + year + " was " + winningNoc.getWinningNOC() + " with " + winningCount + " Gold medals!\n");
+            Noc currentNoc = (Noc) current.data;
+            winningNoc = currentNoc.getWinningNOC();
+            int winningCount = currentNoc.getGoldCount(winningNoc);
+            System.out.println("The NOC with the most gold medals in " + year + " was " + winningNoc + " with " + winningCount + " Gold medals!\n");
         }
     }
 
