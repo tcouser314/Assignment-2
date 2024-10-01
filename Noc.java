@@ -182,7 +182,7 @@ public class Noc implements NocInterface
 				winningNOC = currentAthlete.getNOC();
 			}
 		}
-		return winningNOC;
+		return "WinningNOC";
 	}
 
     /**

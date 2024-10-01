@@ -142,7 +142,7 @@ public class Years implements YearsInterface
         if (year == 0) {
             System.out.println("No data!");
         } else {
-            System.out.println("The most successful year for " + noc + " was " + year + " with " + max + " Gold medals!\n");
+            System.out.println("\nThe most successful year for " + noc + " was " + year + " with " + max + " Gold medals!\n");
         }
         return year;
     }
@@ -167,25 +167,31 @@ public class Years implements YearsInterface
     public void showWinningNOC(int year)
     {
         Node current = firstNOC;
-        String winningNoc = null;
         boolean found = false;
+        Node previous = null;
         
         while (current != null && !found) {
             Noc currentNoc = (Noc) current.data;
-            System.out.println("test" + currentNoc.getYear());
+            System.out.println("test " + currentNoc.getYear());
             if (currentNoc.getYear() == year) {
                 found = true;
                 System.out.println("found");
             }
+            previous = current;
             current = current.getNext();
         }
         if (!found) {
             System.out.println("No data!");
         } else {
-            Noc currentNoc = (Noc) current.data;
-            winningNoc = currentNoc.getWinningNOC();
-            int winningCount = currentNoc.getGoldCount(winningNoc);
-            System.out.println("The NOC with the most gold medals in " + year + " was " + winningNoc + " with " + winningCount + " Gold medals!\n");
+
+
+            Noc previousNoc = (Noc) previous.data;
+            // System.out.println(previousNoc.toString());
+
+            String winningNoc = previousNoc.getWinningNOC();
+            System.out.println(winningNoc);
+            // int winningCount = previousNoc.getGoldCount(winningNoc);
+            // System.out.println("The NOC with the most gold medals in " + year + " was " + winningNoc + " with " + winningCount + " Gold medals!\n");
         }
     }
 
