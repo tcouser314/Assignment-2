@@ -12,7 +12,6 @@ public class Noc implements NocInterface
 {
     // instance variable declarations
 	private Node firstAthlete;
-	private int year;
     
 	/**
 	 * Constructor
@@ -25,7 +24,6 @@ public class Noc implements NocInterface
     public Noc(int year)
     {
 		this.firstAthlete = null;
-		this.year = year;
     }
 
 	/**
@@ -199,6 +197,10 @@ public class Noc implements NocInterface
 		int year = getYear();
 		String city = getCity();
 		System.out.println("Medal Tally for " + year + " in " + city);
+
+		Node current = firstAthlete;
+		Athlete currentAthlete = (Athlete) current.data;
+
     }
 
 	/**
