@@ -214,16 +214,26 @@ public class Years implements YearsInterface
 	 */
     public void showMedalTally(int year)
     {
-
         Node current = firstNOC;
-        Noc currentNoc = (Noc) firstNOC.data;
-
-        while (current != null) {
-            currentNoc = (Noc) current.data;
+        boolean found = false;
+        Node previous = null;
+        
+        while (current != null && !found) {
+            Noc currentNoc = (Noc) current.data;
+            System.out.println("test " + currentNoc.getYear());
+            
             if (currentNoc.getYear() == year) {
-                currentNoc.showMedalTally();
+                found = true;
+                System.out.println("found");
             }
+            previous = current;
             current = current.getNext();
+        }
+        if (!found) {
+            System.out.println("No data!");
+        } else {
+            Noc previousNoc = (Noc) previous.data;
+            previousNoc.showMedalTally();
         }
     }
 
