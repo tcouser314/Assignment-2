@@ -4,7 +4,7 @@
  * KIT107 Assignment 2 -- Years Implementation
  * 
  * @author Thomas Couser 692529
- * @version	<<date of completion>>
+ * @version	2/10/2024
  */
 
 
@@ -56,22 +56,27 @@ public class Years implements YearsInterface
 	 * Informally: Add an athlete to the appropriate year (Games) in the
      *                  collection.
 	 */
-    public void addAthleteToYears(Athlete a) {
-        // Check if the athlete's result is a medal
-        // if (!a.result.equals("Gold") && !a.result.equals("Silver") && !a.result.equals("Bronze")) {
-        if (a.result.equals("No medal")) {
-            return;
-        }
-
+    public void addAthleteToYears(Athlete a) 
+    {
         boolean found = false; // Whether the year has been found
         Node current = firstNOC; // The current NOC being searched
         Node previous = null; // The previous NOC in the collection
         Noc currentNoc = null; // The current NOC being searched in Noc form instead of Node
+        Node newNode = null; // new Node which will store a new NOC if it needs to be added
+
+        // Check if the athlete's result is a medal
+        // if (!a.result.equals("Gold") && !a.result.equals("Silver") && !a.result.equals("Bronze")) {
+        if (a.result.equals("No medal")) 
+        {
+            return;
+        }
 
         // Search for the year in the collection
-        while (current != null && !found) {
+        while (current != null && !found) 
+        {
             currentNoc = (Noc) current.data;
-            if (currentNoc.getYear() == a.year) {
+            if (currentNoc.getYear() == a.year) 
+            {
                 found = true;
             }
             previous = current;
@@ -79,12 +84,15 @@ public class Years implements YearsInterface
         }
 
         // If the year is not found, create a new NOC
-        if (!found) {
-            Node newNode = new Node(new Noc(a.year));
-            if (previous == null) {
+        if (!found) 
+        {
+            newNode = new Node(new Noc(a.year)); // new Node which will store a new NOC if it needs to be added
+            if (previous == null) 
+            {
                 newNode.setNext(firstNOC);
                 firstNOC = newNode;
-            } else {
+            } else 
+            {
                 newNode.setNext(previous.next);
                 previous.setNext(newNode);
             }
@@ -92,23 +100,12 @@ public class Years implements YearsInterface
         }
 
         // Add the athlete to the NOC
-        if (currentNoc != null) {
+        if (currentNoc != null) 
+        {
             currentNoc.addAthleteToNOC(a);
         }
     }
 
-
-    public void displayAthletes()
-    {
-        // Debugging method to display all athletes in the collection
-        Node current = firstNOC; // The current NOC being searched
-
-        while (current != null) {
-            Noc currentNoc = (Noc) current.data;
-            System.out.println(currentNoc.toString());
-            current = current.getNext();
-        }
-    }
 
     /**
 	 * showMostSuccessfulYear()
@@ -130,24 +127,31 @@ public class Years implements YearsInterface
      *                  from the given NOC and return the year with the most
      *                  gold medals.
 	 */
-    public int showMostSuccessfulYear(String noc) {
+    public int showMostSuccessfulYear(String noc) 
+    {
         Node current = firstNOC; // The current NOC being searched
         int max = 0; // The maximum number of gold medals found
         int year = 0; // The year with the most gold medals found
+        Noc currentNoc = null; // The current NOC being searched
+        int goldCount = 0; // The number of gold medals for the current NOC
 
         // Search for the year with the most gold medals for the given NOC
-        while (current != null) {
-            Noc currentNoc = (Noc) current.data;
-            int goldCount = currentNoc.getGoldCount(noc);
-            if (goldCount > max) {
+        while (current != null) 
+        {
+            currentNoc = (Noc) current.data;
+            goldCount = currentNoc.getGoldCount(noc);
+            if (goldCount > max) 
+            {
                 max = goldCount;
                 year = currentNoc.getYear();
             }
             current = current.getNext();
         }
-        if (year == 0) {
+        if (year == 0) 
+        {
             System.out.println("No data!");
-        } else {
+        } else 
+        {
             System.out.println("\nThe most successful year for " + noc + " was " + year + " with " + max + " Gold medals!\n");
         }
         return year;
@@ -175,27 +179,33 @@ public class Years implements YearsInterface
         Node current = firstNOC; // The current NOC being searched
         boolean found = false; // Whether the year has been found
         Node previous = null; // The previous NOC in the collection
+        Noc currentNoc = null; // The current NOC being searched in Noc form instead of Node
+        Noc previousNoc = null; // The previous NOC in Noc form
+        String winningNoc = ""; // The NOC with the most gold medals
+        int winningCount = 0; // The number of gold medals for the winning NOC
         
         // Search for the year in the collection
-        while (current != null && !found) {
-            Noc currentNoc = (Noc) current.data;
+        while (current != null && !found) 
+        {
+            currentNoc = (Noc) current.data;
             // System.out.println("test " + currentNoc.getYear());
             
-            if (currentNoc.getYear() == year) {
+            if (currentNoc.getYear() == year) 
+            {
                 found = true;
                 // System.out.println("found");
             }
             previous = current;
             current = current.getNext();
         }
-        if (!found) {
+        if (!found) 
+        {
             System.out.println("No data!");
-        } else {
-
-            Noc previousNoc = (Noc) previous.data;
-
-            String winningNoc = previousNoc.getWinningNOC();
-            int winningCount = previousNoc.getGoldCount(winningNoc);
+        } else 
+        {
+            previousNoc = (Noc) previous.data;
+            winningNoc = previousNoc.getWinningNOC();
+            winningCount = previousNoc.getGoldCount(winningNoc);
             System.out.println("The NOC with the most gold medals in " + year + " was " + winningNoc + " with " + winningCount + " Gold medals!\n");
         }
     }
@@ -221,20 +231,24 @@ public class Years implements YearsInterface
         Node current = firstNOC; // The current NOC being searched
         boolean found = false; // Whether the year has been found
         Node previous = null; // The previous NOC in the collection
+        Noc currentNoc = null; // The current NOC being searched in Noc form instead of Node
         
         // Search for the year in the collection
-        while (current != null && !found) {
-            Noc currentNoc = (Noc) current.data;
-            
-            if (currentNoc.getYear() == year) {
+        while (current != null && !found) 
+        {
+            currentNoc = (Noc) current.data;
+            if (currentNoc.getYear() == year) 
+            {
                 found = true;
             }
             previous = current;
             current = current.getNext();
         }
-        if (!found) {
+        if (!found) 
+        {
             System.out.println("No data!");
-        } else {
+        } else 
+        {
             Noc previousNoc = (Noc) previous.data;
             previousNoc.showMedalTally();
         }
@@ -257,9 +271,12 @@ public class Years implements YearsInterface
     public String toString()
     {
         String result = ""; // The string to return
-        Node current = firstNOC;
-        while (current != null) {
-            Noc currentNoc = (Noc) current.data;
+        Node current = firstNOC; // The current NOC being searched
+        Noc currentNoc = null; // The current NOC being searched in Noc form instead of Node
+
+        while (current != null) 
+        {
+            currentNoc = (Noc) current.data;
             result += currentNoc.toString() + "\n";
             current = current.getNext();
         }
@@ -288,12 +305,16 @@ public class Years implements YearsInterface
         Node current = firstNOC; // The current NOC being searched
         Node previous = null; // The previous NOC in the collection
         boolean found = false; // Whether the year has been found
+        Noc currentNoc = null; // The current NOC being searched in Noc form instead of Node
+        Noc previousNoc = null; // The previous NOC in Noc form
 
         // Search for the year in the collection
-        while (current != null && !found) {
-            Noc currentNoc = (Noc) current.data;
+        while (current != null && !found) 
+        {
+            currentNoc = (Noc) current.data;
             
-            if (currentNoc.getYear() == year) {
+            if (currentNoc.getYear() == year) 
+            {
                 found = true;
             }
             previous = current;
@@ -301,10 +322,12 @@ public class Years implements YearsInterface
         }
 
         // If the year is not found, return an empty string, otherwise return the NOC's toString
-        if (!found) {
+        if (!found) 
+        {
             return "";
-        } else {
-            Noc previousNoc = (Noc) previous.data;
+        } else 
+        {
+            previousNoc = (Noc) previous.data;
             result = previousNoc.toString();
         }
         return result;
