@@ -61,6 +61,15 @@ public class AssigTwo224
 
 		// produce athlete-based medal table for that year
 		olympiad.showMedalTally(year);
+
+		// just for fun
+		// int year1;
+		// System.out.print("Which year would you like to explore? ");
+		// year1 = sc.nextInt();
+		// olympiad.showWinningNOC(year1);
+		// olympiad.showMedalTally(year1);
+
+		// close the scanner
 		sc.close();
     }
 }
