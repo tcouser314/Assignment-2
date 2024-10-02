@@ -64,5 +64,6 @@ public class AssigTwo224
 
 		// produce athlete-based medal table for that year
 		olympiad.showMedalTally(year);
+		sc.close();
     }
 }
