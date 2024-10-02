@@ -172,11 +172,11 @@ public class Years implements YearsInterface
         
         while (current != null && !found) {
             Noc currentNoc = (Noc) current.data;
-            System.out.println("test " + currentNoc.getYear());
+            // System.out.println("test " + currentNoc.getYear());
             
             if (currentNoc.getYear() == year) {
                 found = true;
-                System.out.println("found");
+                // System.out.println("found");
             }
             previous = current;
             current = current.getNext();
@@ -187,10 +187,10 @@ public class Years implements YearsInterface
             // Noc currentNoc = (Noc) current.data;
 
             Noc previousNoc = (Noc) previous.data;
-            System.out.println(previousNoc.toString());
+            // System.out.println(previousNoc.toString());
 
             String winningNoc = previousNoc.getWinningNOC();
-            System.out.println(winningNoc);
+            // System.out.println(winningNoc);
             int winningCount = previousNoc.getGoldCount(winningNoc);
             System.out.println("The NOC with the most gold medals in " + year + " was " + winningNoc + " with " + winningCount + " Gold medals!\n");
         }
@@ -220,11 +220,11 @@ public class Years implements YearsInterface
         
         while (current != null && !found) {
             Noc currentNoc = (Noc) current.data;
-            System.out.println("test " + currentNoc.getYear());
+            // System.out.println("test " + currentNoc.getYear());
             
             if (currentNoc.getYear() == year) {
                 found = true;
-                System.out.println("found");
+                // System.out.println("found");
             }
             previous = current;
             current = current.getNext();
@@ -235,6 +235,8 @@ public class Years implements YearsInterface
             Noc previousNoc = (Noc) previous.data;
             previousNoc.showMedalTally();
         }
+
+        
     }
 
 
