@@ -5,6 +5,20 @@
  * 
  * @author Thomas Couser 692529
  * @version	2/10/2024
+ * 
+ * a) 
+ * I would use a list to store the cluster of athletes within a single year. 
+ * The functionality allows for the addition of athletes to the list in a specific
+ * order, checking if the list is empty and interating through the list and 
+ * retrieving details. A list provides the flexibility for ordered insertion. 
+ * 
+ * b)
+ * I would use a linked list as the underlying data structure for the list of
+ * athletes within a single year. This is because linked lists allow for quick
+ * insertion of elements in order, which is important for the NOC class. Linked
+ * lists can also grow easily which is important since we do not know the number
+ * of athletes that competed in any given year.
+ * 
  */
 
 

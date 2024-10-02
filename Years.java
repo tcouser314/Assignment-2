@@ -5,6 +5,20 @@
  * 
  * @author Thomas Couser 692529
  * @version	2/10/2024
+ * 
+ * c)
+ * I would use a list to model the collection of years. The task requires adding
+ * years in order, checking if the list is empty, iterating through the years to
+ * find specific information, and checking if a given year exists. A list allows
+ * for the ordered structure and the ability to traverse the list of years. 
+ * 
+ * d)
+ * I would use a linked list to model the collection of years. This is because
+ * the task requires adding years in order, checking if the list is empty and
+ * iterating through the years to find information. A linked list allows for quick
+ * insertion of elements which is helpful since more years could be added in the
+ * future. It also allows for easy traversal of the list to find specific years.
+ * 
  */
 
 
