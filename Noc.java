@@ -21,9 +21,9 @@ public class Noc implements NocInterface
      *                  initialised with the relevant parameters.
 	 * Informally: Initialise the collection of athletes.
 	 */
-    public Noc()
+    public Noc(int year)
     {
-		firstAthlete = null;
+		this.firstAthlete = null;
     }
 
 	/**
@@ -86,9 +86,6 @@ public class Noc implements NocInterface
 	}
 
 
-	public void addAthleteToNOC(Athlete a) {
-		return;
-	}
 	/**
 	 * addAthleteToNOC()
 	 * 
@@ -101,47 +98,28 @@ public class Noc implements NocInterface
 	 * Informally: Add an athlete to an Olympic Games in order of NOC and
      *                  athlete name.
 	 */
-	// public void addAthleteToNOC(Athlete a)
-	// {
-	// 	Node newNode = new Node(a);
-	// 	Node current = firstAthlete;
-	// 	Node previous = null;
-	// 	boolean inserted = false;
-
-	// 	while (current != null && !inserted) {
-	// 		Athlete currentAthlete = (Athlete) current.data;
-	// 		if (a.getNOC().compareTo(currentAthlete.getNOC()) < 0) {
-	// 			if (previous == null) {
-	// 				newNode.next = firstAthlete;
-	// 				firstAthlete = newNode;
-	// 			} else {
-	// 				previous.next = newNode;
-	// 				newNode.next = current;
-	// 			}
-	// 			inserted = true;
-	// 		} else if (a.getNOC().compareTo(currentAthlete.getNOC()) == 0) {
-	// 			if (a.getName().compareTo(currentAthlete.getName()) < 0) {
-	// 				if (previous == null) {
-	// 					newNode.next = firstAthlete;
-	// 					firstAthlete = newNode;
-	// 				} else {
-	// 					previous.next = newNode;
-	// 					newNode.next = current;
-	// 				}
-	// 				inserted = true;
-	// 			}
-	// 		}
-	// 		previous = current;
-	// 		current = current.next;
-	// 	}
-	// 	if (!inserted) {
-	// 		if (previous == null) {
-	// 			firstAthlete = newNode;
-	// 		} else {
-	// 			previous.next = newNode;
-	// 		}
-	// 	}
-	// }
+	public void addAthleteToNOC(Athlete a)
+	{
+		Node newNode = new Node(a);
+        if (firstAthlete == null) {
+            firstAthlete = newNode;
+        } else {
+            Node current = firstAthlete;
+            Node previous = null;
+            while (current != null && a.getNOC().compareTo(((Athlete) current.data).getNOC()) > 0) {
+			// while (current != null && a.getName().compareTo(((Athlete) current.data).getName()) > 0) {
+                previous = current;
+                current = current.next;
+            }
+            if (previous == null) {
+                newNode.next = firstAthlete;
+                firstAthlete = newNode;
+            } else {
+                newNode.next = previous.next;
+                previous.next = newNode;
+            }
+        }
+	}
 
 	/**
 	 * getGoldCount()
@@ -172,40 +150,73 @@ public class Noc implements NocInterface
 		return count;
 	}
 
-	/**
-	 * getWinningNOC()
-	 * 
-	 * @return String -- the NOC with the largest number of gold medals in
-     *                      the crrent Olympic Games
-	 * 
-	 * Precondition: None
-	 * Postcondition: A count is made of the number of gold medalists in each
-     *                  NOC with the name and number of the most awarded NOC
-     *                  remembered and the winning NOC returned.  If the
-     *                  cluster is empty then "" is returned, and, in the case
-     *                  of a tie, the NOC alphabetically later is returned.
-	 * Informally: Count the number of athletes from every NOC in the current
-     *                  Olympic Games who received gold medals and return the
-     *                  NOC receiving the most.
-	 */
-	public String getWinningNOC()
-	{
-		String winningNOC = "";
-		int winningCount = 0;
-		Node current = firstAthlete;
+// 	/**
+// 	 * getWinningNOC()
+// 	 * 
+// 	 * @return String -- the NOC with the largest number of gold medals in
+//      *                      the crrent Olympic Games
+// 	 * 
+// 	 * Precondition: None
+// 	 * Postcondition: A count is made of the number of gold medalists in each
+//      *                  NOC with the name and number of the most awarded NOC
+//      *                  remembered and the winning NOC returned.  If the
+//      *                  cluster is empty then "" is returned, and, in the case
+//      *                  of a tie, the NOC alphabetically later is returned.
+// 	 * Informally: Count the number of athletes from every NOC in the current
+//      *                  Olympic Games who received gold medals and return the
+//      *                  NOC receiving the most.
+// 	 */
+public String getWinningNOC() {
+    final int SIZE = 100;
+    Node current = firstAthlete;
+    String[] nocs = new String[SIZE];
+    int[] goldCount = new int[SIZE];
+    int nocIndex = 0;
+    int year = getYear();
 
-		while (current != null) {
-			Athlete currentAthlete = (Athlete) current.data;
-			int goldCount = getGoldCount(currentAthlete.getNOC());
-			if (goldCount > winningCount) {
-				winningNOC = currentAthlete.getNOC();
-				winningCount = goldCount;
-			} else if (goldCount == winningCount && currentAthlete.getNOC().compareTo(winningNOC) > 0) {
-				winningNOC = currentAthlete.getNOC();
-			}
-		}
-		return winningNOC;
-	}
+    while (current != null) {
+        Athlete athlete = (Athlete) current.data;
+
+        if (athlete.year == year) {
+            boolean nocFound = false;
+
+            for (int i = 0; i < nocIndex; i++) {
+                if (nocs[i].equals(athlete.noc)) {
+                    nocFound = true;
+                    if (athlete.result.equals("Gold")) {
+                        goldCount[i]++;
+                    }
+                    break;
+                }
+            }
+
+            if (!nocFound) {
+                nocs[nocIndex] = athlete.noc;
+                if (athlete.result.equals("Gold")) {
+                    goldCount[nocIndex]++;
+                }
+                nocIndex++;
+            }
+        }
+        current = current.getNext();
+    }
+
+    String winningNOC = "";
+    int winningCount = 0;
+
+    for (int i = 0; i < nocIndex; i++) {
+        if (goldCount[i] > winningCount || (goldCount[i] == winningCount && nocs[i].compareTo(winningNOC) > 0)) {
+            winningNOC = nocs[i];
+            winningCount = goldCount[i];
+        }
+    }
+
+    if (nocIndex == 0) {
+        return "";
+    } else {
+        return winningNOC;
+    }
+}
 
     /**
 	 * showMedalTally()
@@ -216,8 +227,72 @@ public class Noc implements NocInterface
 	 */
     public void showMedalTally()
     {
+	
+		final int SIZE = 100;
+        Node current = firstAthlete;
+        String[] nocs = new String[SIZE];
+        int[] goldCount = new int[SIZE];
+        int[] silverCount = new int[SIZE];
+        int[] bronzeCount = new int[SIZE];
+        int[] medalCount = new int[SIZE];
+        int nocIndex = 0;
+        String city = getCity();
+		int year = getYear();
 
+        while (current != null) {
+            Athlete athlete = (Athlete) current.data;
+            
+            if (athlete.year == year) {
+                boolean nocFound = false;
+                
+                for (int i = 0; i < nocIndex; i++) {
+                    if (nocs[i].equals(athlete.noc)) {
+                        nocFound = true;
+                        char result = athlete.result.charAt(0);
+                        medalCount[i]++;
+                        if (result == 'G') {
+                            goldCount[i]++;
+                        } else if (result == 'S') {
+                            silverCount[i]++;
+                        } else {
+                            bronzeCount[i]++;
+                        }
+                    }
+            }
+        if (!nocFound) {
+            nocs[nocIndex] = athlete.noc;
+            char result = athlete.result.charAt(0);
+            medalCount[nocIndex]++;
+            if (result == 'G') {
+                goldCount[nocIndex]++;
+            } else if (result == 'S') {
+                silverCount[nocIndex]++;
+            } else {
+                bronzeCount[nocIndex]++;
+            }
+            nocIndex++;
+        }
+        }
+        
+        current = current.getNext();
     }
+
+    if (nocIndex == 0) {
+        System.out.println("No data!");
+        return;
+    }
+    
+    System.out.println("Medal Tally for " + year + " Olympic Games in " + city + "\n\n");
+
+    for (int i = 0; i < nocIndex; i++) {
+        String tallyString = "";
+
+		tallyString += "G".repeat(goldCount[i]) + "S".repeat(silverCount[i]) + "B".repeat(bronzeCount[i]);
+        
+        String tally = nocs[i] + "\t" + tallyString + " "+goldCount[i]+" x Gold, "+silverCount[i]+" x Silver, "+bronzeCount[i]+" x Bronze, Total: "+medalCount[i];
+        System.out.println(tally);
+    }
+	}
 
 	/**
 	 * toString()
@@ -233,6 +308,12 @@ public class Noc implements NocInterface
 	 */
     public String toString()
     {
-		return "";
+		String result = "";
+		Node current = firstAthlete;
+		while (current != null) {
+			result += current.data.toString() + "\n";
+			current = current.next;
+		}
+		return result;
     }
 }

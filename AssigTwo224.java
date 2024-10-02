@@ -49,8 +49,6 @@ public class AssigTwo224
 		myFile=new FileHandler(FILENAME);
 		myFile.readFile(olympiad);
 
-		// olympiad.displayAthletes();
-
 		// System.out.println(olympiad.toString());  // uncomment when debugging
 
 		// seek most successful year for user's provided NOC
@@ -63,5 +61,6 @@ public class AssigTwo224
 
 		// produce athlete-based medal table for that year
 		olympiad.showMedalTally(year);
+		sc.close();
     }
 }
