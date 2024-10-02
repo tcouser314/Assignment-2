@@ -49,15 +49,12 @@ public class AssigTwo224
 		myFile=new FileHandler(FILENAME);
 		myFile.readFile(olympiad);
 
-		// olympiad.displayAthletes();
-
 		// System.out.println(olympiad.toString());  // uncomment when debugging
 
 		// seek most successful year for user's provided NOC
 		System.out.print("Which NOC would you like to explore? ");
 		noc=sc.nextLine();
 		year=olympiad.showMostSuccessfulYear(noc);
-		// System.out.println(year);
 
 		// seek most successful NOC for that year
 		olympiad.showWinningNOC(year);
